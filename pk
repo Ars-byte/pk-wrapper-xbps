@@ -27,7 +27,7 @@ def pk_install(*packages):
     if not packages:
         print("Usage: pk install <paquete1> [paquete2] ...")
         sys.exit(1)
-    cmd = ["xbps-install", "-y"] + list(packages)
+    cmd = ["sudo","xbps-install", "-y"] + list(packages)
     print(f"📦 Instalando: {' '.join(packages)}")
     run_cmd(cmd)
 
@@ -35,22 +35,22 @@ def pk_remove(*packages):
     if not packages:
         print("Usage: pk remove <paquete1> [paquete2] ...")
         sys.exit(1)
-    cmd = ["xbps-remove", "-y"] + list(packages)
+    cmd = ["sudo","xbps-remove", "-y"] + list(packages)
     print(f"🗑️  Eliminando: {' '.join(packages)}")
     run_cmd(cmd)
 
 def pk_query(pattern=None):
     if pattern:
-        cmd = ["xbps-query", "-l", "-p", pattern]
+        cmd = ["xbps-query", "-Rs", pattern]
         print(f"🔍 Buscando paquetes que coincidan con: '{pattern}'")
     else:
-        cmd = ["xbps-query", "-l"]
+        cmd = ["sudo","xbps-query", "-Rs"]
         print("📋 Paquetes instalados:")
     run_cmd(cmd)
 
 def pk_rindex():
     print("🔄 Actualizando índice de paquetes local...")
-    run_cmd(["xbps-rindex", "-a"])
+    run_cmd(["sudo","xbps-rindex", "-a"])
 
 def pk_up():
     print("🚀 Actualizando todo el sistema: xbps-install -Syu")
