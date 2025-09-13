@@ -5,6 +5,24 @@ import sys
 import os
 
 
+def run_cmd(cmd):
+    try:
+        result = subprocess.run(cmd, check=True, capture_output=True, text=True)
+        if result.stdout:
+            print(result.stdout.strip())
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Error ejecutando: {' '.join(cmd)}", file=sys.stderr)
+        print(f"   Código de salida: {e.returncode}", file=sys.stderr)
+        print(f"   Error: {e.stderr.strip()}", file=sys.stderr)
+        sys.exit(e.returncode)
+    except FileNotFoundError:
+        print(f"❌ Comando no encontrado: {cmd[0]}. ¿Está instalado?", file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"❌ Error inesperado: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
 def pk_install(*packages):
     if not packages:
         print("Usage: pk install <paquete1> [paquete2] ...")
