@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+
+import subprocess
+import sys
+import os
+
+
+def pk_install(*packages):
+    if not packages:
+        print("Usage: pk install <paquete1> [paquete2] ...")
+        sys.exit(1)
+    cmd = ["xbps-install", "-y"] + list(packages)
+    print(f"📦 Instalando: {' '.join(packages)}")
+    run_cmd(cmd)
+
+def pk_remove(*packages):
+    if not packages:
+        print("Usage: pk remove <paquete1> [paquete2] ...")
+        sys.exit(1)
+    cmd = ["xbps-remove", "-y"] + list(packages)
+    print(f"🗑️  Eliminando: {' '.join(packages)}")
+    run_cmd(cmd)
+
+def pk_query(pattern=None):
+    if pattern:
+        cmd = ["xbps-query", "-l", "-p", pattern]
+        print(f"🔍 Buscando paquetes que coincidan con: '{pattern}'")
+    else:
+        cmd = ["xbps-query", "-l"]
+        print("📋 Paquetes instalados:")
+    run_cmd(cmd)
+
+def pk_rindex():
+    print("🔄 Actualizando índice de paquetes local...")
+    run_cmd(["xbps-rindex", "-a"])
+
+def pk_up():
+    print("🚀 Actualizando todo el sistema: xbps-install -Syu")
+    run_cmd(["sudo", "xbps-install", "-Syu"])
+
+def main():
+    if len(sys.argv) < 2:
+        print("""
+📌 Comando 'pk' - Interfaz simplificada para xbps en Void Linux
+
+Uso:
+  pk install   <paquete> [...]     Instala paquetes (con -y)
+  pk remove    <paquete> [...]     Elimina paquetes (con -y)
+  pk query     [patrón]            Lista paquetes instalados o busca por patrón
+  pk rindex                      Actualiza el índice local de paquetes
+  pk up                          Actualiza todo el sistema (-Syu)
+
+Ejemplos:
+  pk install firefox vim
+  pk remove firefox
+  pk query vim
+  pk rindex
+  pk up
+""")
+        sys.exit(1)
+
+    command = sys.argv[1].lower()
+
+    if command == "install":
+        pk_install(*sys.argv[2:])
+    elif command == "remove":
+        pk_remove(*sys.argv[2:])
+    elif command == "query":
+        pk_query(*sys.argv[2:] if len(sys.argv) > 2 else None)
+    elif command == "rindex":
+        pk_rindex()
+    elif command == "up":
+        pk_up()
+    else:
+        print(f"❌ Comando desconocido: {command}")
+        print("Usa: pk install | remove | query | rindex | up")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
