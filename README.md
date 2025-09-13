@@ -27,6 +27,3 @@ pk query vim
 pk rindex
 pk up
 ```
-El autocompletado con Tab funciona en todos los subcomandos y nombres de paquetes:
-pk in<TAB>     → pk install
-pk install fi<TAB><TAB> → sugiere: firefox firejail firewalld...
