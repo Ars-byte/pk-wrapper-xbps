@@ -15,6 +15,17 @@ https://github.com/user-attachments/assets/d6490870-c8bf-4ccc-9dd6-567a55162379
 
 
 > 💡 Todas las funciones muestran la salida en **tiempo real**, como si ejecutaras los comandos originales.
-
 ---
+
+### Dependencias
+
+pip install InquirerPy
+
+
+### Ejecucion
+
+python3 main.py
+
+
+
 
